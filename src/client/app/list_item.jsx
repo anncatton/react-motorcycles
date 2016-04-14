@@ -23,7 +23,7 @@ var ListItem = React.createClass({
 
   render: function() {
     return (
-      <li>{this.props.name}, {this.props.location}</li>
+      <li>{this.props.name}, {this.props.lat}, {this.props.lng}</li>
     );
   }
 
