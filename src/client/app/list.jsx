@@ -9,13 +9,14 @@ var List = React.createClass({
     var rows = [];
     var lastUser = null;
     var id = 1;
+
     this.props.userNames.forEach(function(user) {
       if (user.name !== lastUser) {
         rows.push(<ListItem key={id} name={user.name} lat={user.lat} lng={user.lng} />);
         id += 1
       }
     });
-  // render: function() {
+
     return (
       <div>
         <ul>

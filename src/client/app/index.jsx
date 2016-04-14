@@ -12,6 +12,7 @@ var USERS = [
   {name: 'Chocolate Thunder', lat: 44.20, lng: -79.86},
   {name: 'Handsome', lat: 43.10, lng: -79.65}
 ];
+var users;
 /// Google Map Vars
 var map;
 // var marker;
@@ -20,9 +21,20 @@ var mapZoomLevel;
 /// Config for the app setup
 var config = {
   initialLat: 43.75,
-  initialLon: -79.38,
+  initialLng: -79.38,
   mapZoomLevel: 10
 }
+
+// var App = React.createClass({
+
+//  render: function() {
+//    return(
+//      <div>
+//        <UsersMap />
+//        <List />
+//    );
+//  }
+// });
 
 var UsersMap = React.createClass({
  
@@ -30,11 +42,11 @@ var UsersMap = React.createClass({
    * Set an initial state
    */
   getInitialState: function () {
-
+    // return { data: null };
     return {
-      /// Passed as props on render
+      // Passed as props on render
       lat: this.props.initialLat,
-      lon: this.props.initialLon,
+      lon: this.props.initialLng,
     };
   },
 
@@ -86,14 +98,6 @@ var UsersMap = React.createClass({
       mapZoomLevel = map.getZoom();
     });
   },
-  
-  // createMarker: function(lat, lng) {
-    // return marker = new google.maps.Marker({
-    //   position: {lat: lat, lng: lng},
-    //   map: map,
-    //   draggable: false
-    // });
-  // },
 
   updateState: function () {
 
@@ -101,7 +105,7 @@ var UsersMap = React.createClass({
     var lastUser = null;
     var id = 1;
     var latLng = new google.maps.LatLng(this.state.lat, this.state.lng);
-
+    // console.log(this.props.users);
     this.props.users.forEach(function(user) {
       if (user.name !== lastUser) {
         var marker = new google.maps.Marker({
@@ -135,57 +139,72 @@ var UsersMap = React.createClass({
    */
   componentDidMount: function () {
     /// Render a new map
-    this.renderMap(config.initialLat, config.initialLon);
-    
+    console.log('mounting');
+    this.renderMap(config.initialLat, config.initialLng);
+    // this.serverRequest = $.get(this.props.source).done(function(result) {
+    //   var users = result.users;
+    //   // this.setState({data: result});
+    // }.bind(this));
+    // $.get('https://engine.eatsleepride.com:8088/api/search/usersNearby?lat=43.648714&lng=-79.3924411&token=17a9b49cf1a6748e466c498dc077edc9').done(function(data) {
+    //   this.setState({data: data});
+    //   console.log(data.users);
+    // }.bind(this));
+
+    // this.getData();
     this.updateState();
+
     /// Run update state, passing in the setup
     // this.updateState(null, this.state.lat, this.state.lon);
   },
 
   // somewhere in this function is where the ajax needs to happen (getData, then update map)
- // getData: function (location, lat, lon) {
+  // getData: function () {
+  //   this.serverRequest = $.get(this.props.source).done(function(result) {
+  //     var users = result.users;
+  //     this.setState({data: result});
+  //   }.bind(this));
+  // },
+    // Variable to return
+    // var data;
     
- //    Variable to return
- //    var data;
-    
-    
- //    return data;
- //  },
+    // return data;
     /**
    * Update state
    */
   // updateState: function (locationName, lat, lon) {
     
   //   // Get data from the API, then set state with it
-  //   this.getData(locationName, lat, lon)
-  //     .then(function(data) {
-  //       /// Update the state, pass updateMap as a callback
-  //       this.setState({
-  //         lat:      data.coord.lat,
-  //         lon:      data.coord.lon,
-  //         weather:  this.capitalizeFirstLetter( data.weather[0].description ),
-  //         location: data.name,
-  //         icon:     'http://openweathermap.org/img/w/' + data.weather[0].icon + '.png' /// Messy
-  //       }, this.updateMap ) /// Pass updateMap as a callback
-  //     }.bind(this));
+    // this.getData(locationName, lat, lon)
+    //   .then(function(data) {
+    //     /// Update the state, pass updateMap as a callback
+    //     this.setState({
+    //       lat:      data.coord.lat,
+    //       lon:      data.coord.lon,
+    //       weather:  this.capitalizeFirstLetter( data.weather[0].description ),
+    //       location: data.name,
+    //       icon:     'http://openweathermap.org/img/w/' + data.weather[0].icon + '.png' /// Messy
+    //     }, this.updateMap ) /// Pass updateMap as a callback
+    //   }.bind(this));
   //   // return null;
   // },
 
-    render: function() {
-      var divStyle = {height: "100%", width: "70%"};
-      return (
-        <div>
+  render: function() {
+    var divStyle = {height: "100%", width: "70%"};
+
+    return (
+      <div>
           <div id="map" style={divStyle}></div>
-          <List userNames={this.props.users} />
-        </div>
-      );
-    }
+          <List userNames={this.props.users} />        
+      </div>
+    );
+  }
+
 });
 
 /**
  * Slap it on the page
  */
 ReactDOM.render(
-  <UsersMap initialLat={config.initialLat} initialLon={config.initialLon} users={USERS} />,
+  <UsersMap initialLat={config.initialLat} initialLng={config.initialLng} users={USERS} source={'https://engine.eatsleepride.com:8088/api/search/usersNearby?lat=43.648714&lng=-79.3924411&token=17a9b49cf1a6748e466c498dc077edc9'} />,
   document.getElementById('app')
 );
