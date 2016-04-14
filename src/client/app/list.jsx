@@ -14,8 +14,6 @@ var List = React.createClass({
         rows.push(<ListItem key={id} name={user.name} location={user.location} />);
         id += 1
       }
-      // rows.push(<ProductRow product={product} key={product.name} />);
-      // lastUser = product.category;
     });
   // render: function() {
     return (
