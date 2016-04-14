@@ -1,9 +1,17 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import List from './list.jsx';
 
 /// So secure
 var key = "AIzaSyC_9SnjEtTWdvu1bcIkE7GTMt1ZGGfOMJs";
-
+var USERS = [
+  {name: 'Hugo', location: 'Toronto'},
+  {name: 'Johnny', location: 'Montreal'},
+  {name: 'Tammy', location: 'Vancouver'},
+  {name: 'Sally', location: 'Halifax'},
+  {name: 'Chocolate Thunder', location: 'New York'},
+  {name: 'Handsome', location: 'Cleveland'}
+];
 /// Google Map Vars
 var map;
 var marker;
@@ -27,11 +35,6 @@ var UsersMap = React.createClass({
       /// Passed as props on render
       lat: this.props.initialLat,
       lon: this.props.initialLon,
-      
-      /// These will be updated with data from the API, so are subject to change (point 2)
-      location: '', 
-      weather:  '',
-      icon:     ''
     };
   },
 
@@ -56,7 +59,7 @@ var UsersMap = React.createClass({
     /// Create a new marker
     marker = new google.maps.Marker({
       map: map,
-      draggable: true
+      draggable: false
     });
     
     /// Set the initial pin drop animation
@@ -99,24 +102,15 @@ var UsersMap = React.createClass({
     /// Run update state, passing in the setup
     this.updateState(null, this.state.lat, this.state.lon);
   },
-
- getData: function (location, lat, lon) {
+  // somewhere in this function is where the ajax needs to happen (getData, then update map)
+ // getData: function (location, lat, lon) {
     
-    /// Variable to return
-    var data;
+ //    Variable to return
+ //    var data;
     
-    /// If it's a search
-    if (location !== null)
-    {
-      // data = $.get('http://api.openweathermap.org/data/2.5/weather?q=' + location + '&APPID=' + key)
-    }
-    else /// It's a pin drop
-    {
-      // data = $.get('http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&APPID=' + key)
-    }
     
-    return data;
-  },
+ //    return data;
+ //  },
     /**
    * Update state
    */
@@ -155,18 +149,20 @@ var UsersMap = React.createClass({
     }.bind(this), 300);
   },
     render: function() {
-      var divStyle = {height: "100%", width: "100%"};
-    return (
-        <div id="map" style={divStyle}></div>
-
-    );
-  }
+      var divStyle = {height: "50%", width: "50%"};
+      return (
+        <div>
+          <div id="map" style={divStyle}></div>
+          <List userNames={this.props.users} />
+        </div>
+      );
+    }
 });
 
 /**
  * Slap it on the page
  */
 ReactDOM.render(
-  <UsersMap initialLat={config.initialLat} initialLon={config.initialLon}/>,
+  <UsersMap initialLat={config.initialLat} initialLon={config.initialLon} users={USERS} />,
   document.getElementById('app')
 );
