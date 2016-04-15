@@ -15,6 +15,7 @@ var config = {
   initialLng: -79.38,
   mapZoomLevel: 10
 }
+var selectedUser = null;
 
 // from https://davidwalsh.name/javascript-debounce-function
 function debounce(func, wait, immediate) {
@@ -37,7 +38,8 @@ var App = React.createClass({
   getInitialState: function() {
     return {
       data: null,
-      bounds: null
+      bounds: null,
+      selectedUser: null
     }
   },
 
@@ -60,6 +62,10 @@ var App = React.createClass({
 
     $(document).on("map_changed", debounce(this.updateData, 250));
     this.updateData();
+    $(document).on("user_selected", function(e, data) {
+      console.log()
+      this.setState({selectedUser: data.selected});
+    }.bind(this));
   },
 
   componentWillUnmount: function() {
@@ -70,7 +76,7 @@ var App = React.createClass({
     return (
       <div>
         <UsersMap initialLat={config.initialLat} initialLng={config.initialLng} userNames={this.state.data} />
-        <List userNames={this.state.data} bounds={this.state.bounds} />
+        <List selectedUser={this.state.selectedUser} userNames={this.state.data} bounds={this.state.bounds} />
       </div>
     );
   }
@@ -106,6 +112,10 @@ var UsersMap = React.createClass({
           });
           marker.setMap(map);
           mapMarkers.push(marker); 
+
+          marker.addListener('click', function() {
+            $(document).trigger('user_selected', { selected: user });
+          });
         }
       });
     }
