@@ -84,9 +84,31 @@ var UsersMap = React.createClass({
     // var latLng = new google.maps.LatLng(this.state.lat, this.state.lng);
 
   },
-    /**
-   * Render the map on the page
-   */
+
+
+  renderMarkers: function() {
+    var lastUser = null;
+
+
+    if (this.props.userNames != null) {
+      this.props.userNames.forEach(function(user) {
+        if (user.name !== lastUser) {
+          var marker = new google.maps.Marker({
+            position: {lat: user.lat, lng: user.lng},
+            map: map,
+            draggable: false
+          });
+          marker.setMap(map);
+        }
+      });
+    }
+
+
+    map.addListener('zoom_changed', function() {
+      mapZoomLevel = map.getZoom();
+    });
+  },
+
   renderMap: function(lat, lng) {
     
     /// Create a new map
@@ -97,51 +119,7 @@ var UsersMap = React.createClass({
       center: new google.maps.LatLng(lat, lng)
     });
   
-    // var mapMarkers = []
-    // var lastUser = null;
-    // var id = 1;
-
-    // if (this.props.userNames != null) {
-    //   this.props.userNames.forEach(function(user) {
-    //     if (user.name !== lastUser) {
-    //       var marker = new google.maps.Marker({
-    //         position: {lat: user.lat, lng: user.lng},
-    //         map: map,
-    //         draggable: false
-    //       });
-    //       marker.setMap(map);
-    //     }
-    //   });
-    // }
-    /// Create a new marker
-    
-    /// Set the initial pin drop animation
-    // marker.setAnimation(google.maps.Animation.DROP);
-  
-    /// Add an event listener for click
-    // google.maps.event.addListener(map, 'click', function(event) {
-    //   var latLng = event.latLng;
-    //   var lat = latLng.lat();
-    //   var lng = latLng.lng();
-      
-    //   /// Update state based on lat lon
-    //   this.updateState(null, lat, lng);
-    // }.bind(this));
-    
-    // /// Add an event listener for drag end
-    // google.maps.event.addListener(marker, 'dragend', function(event) {
-      
-    //   var latLng = event.latLng;
-    //   var lat = latLng.lat();
-    //   var lng = latLng.lng();
-    //   /// Update state based on lat lon
-    //   this.updateState(null, lat, lng);
-    // }.bind(this));
-    
-    /// Update variable on map change
-    map.addListener('zoom_changed', function() {
-      mapZoomLevel = map.getZoom();
-    });
+    this.renderMarkers();
   },
 
   // updateState: function () {
@@ -169,6 +147,7 @@ var UsersMap = React.createClass({
    * After initial render
    */
   componentDidMount: function () {
+
     /// Render a new map
     this.renderMap(config.initialLat, config.initialLng);
 
@@ -216,11 +195,15 @@ var UsersMap = React.createClass({
   //   // return null;
   // },
 
+  componentDidUpdate: function() {
+    this.renderMarkers();
+  },
+
   render: function() {
     var divStyle = {height: "100%", width: "70%"};
 
     return (
-      <div id="map" style={divStyle}></div>        
+      <div id="map" className="foo" style={divStyle}></div>        
     );
   }
 
