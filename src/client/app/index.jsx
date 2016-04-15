@@ -12,12 +12,9 @@ var USERS = [
   {name: 'Chocolate Thunder', lat: 44.20, lng: -79.86},
   {name: 'Handsome', lat: 43.10, lng: -79.65}
 ];
-var users;
 /// Google Map Vars
 var map;
-// var marker;
 var mapZoomLevel;
-
 /// Config for the app setup
 var config = {
   initialLat: 43.75,
@@ -27,30 +24,79 @@ var config = {
 
 var App = React.createClass({
 
- render: function() {
-   return(
-    <div>
-       <UsersMap initialLat={config.initialLat} initialLng={config.initialLng} users={this.props.users} />
-       <List userNames={this.props.users} />
-    </div>
-   );
- }
+  getInitialState: function() {
+    return {data: null}
+  },
+  
+  componentDidMount: function() {
+    this.serverRequest = $.get(this.props.source, function (result) {
+      var users = result.users;
+      this.setState({
+        data: users
+      });
+    }.bind(this));
+  },
+
+  componentWillUnmount: function() {
+    this.serverRequest.abort();
+  },
+
+  render: function() {
+    return (
+      <div>
+        <UsersMap initialLat={config.initialLat} initialLng={config.initialLng} userNames={this.state.data} />
+        <List userNames={this.state.data} />
+      </div>
+    );
+    // if (this.state.data) {
+    //   return (
+    //     <div>
+    //       <UsersMap initialLat={config.initialLat} initialLng={config.initialLng} userNames={this.state.data} />
+    //       <List userNames={this.state.data} />
+    //     </div>
+    //   )
+    // } else {
+    //   return (
+    //     <div>
+    //       <UsersMap initialLat={config.initialLat} initialLng={config.initialLng} />
+    //       <List />
+    //     </div>
+    //   )
+    // }
+  }
+
 });
 
 var UsersMap = React.createClass({
- 
-  /** 
-   * Set an initial state
-   */
+
   getInitialState: function () {
-    // return { data: null };
     return {
-      // Passed as props on render
-      lat: this.props.initialLat,
-      lon: this.props.initialLng,
+      data: null
     };
   },
 
+  // updateState: function() {
+
+  componentWillUpdate: function() {
+
+  // componentWillReceiveProps: function() {
+    var mapMarkers = []
+    var lastUser = null;
+    var id = 1;
+
+    // var latLng = new google.maps.LatLng(this.state.lat, this.state.lng);
+
+    // this.props.userNames.forEach(function(user) {
+    //   if (user.name !== lastUser) {
+    //     var marker = new google.maps.Marker({
+    //       position: {lat: user.lat, lng: user.lng},
+    //       map: map,
+    //       draggable: false
+    //     });
+    //     marker.setMap(map);
+    //   }
+    // });
+  },
     /**
    * Render the map on the page
    */
@@ -100,23 +146,9 @@ var UsersMap = React.createClass({
     });
   },
 
-  updateState: function () {
+  // updateState: function () {
 
-    var mapMarkers = []
-    var lastUser = null;
-    var id = 1;
-    var latLng = new google.maps.LatLng(this.state.lat, this.state.lng);
-    // console.log(this.props.users);
-    this.props.users.forEach(function(user) {
-      if (user.name !== lastUser) {
-        var marker = new google.maps.Marker({
-          position: {lat: user.lat, lng: user.lng},
-          map: map,
-          draggable: false
-        });
-        marker.setMap(map);
-      }
-    });
+
     /// Set a timeout before doing map stuff
     // window.setTimeout( function() {
       
@@ -126,7 +158,7 @@ var UsersMap = React.createClass({
     //   /// Pan map to that position
     //   // map.panTo(latLng);
     // }.bind(this), 300);
-  },
+  // },
   /**
    * Set map marker position and pan settings
    */
@@ -140,20 +172,16 @@ var UsersMap = React.createClass({
    */
   componentDidMount: function () {
     /// Render a new map
-    console.log('mounting');
     this.renderMap(config.initialLat, config.initialLng);
 
     // this.serverRequest = $.get(this.props.source).done(function(result) {
     //   var users = result.users;
     //   // this.setState({data: result});
     // }.bind(this));
-    // $.get('https://engine.eatsleepride.com:8088/api/search/usersNearby?lat=43.648714&lng=-79.3924411&token=17a9b49cf1a6748e466c498dc077edc9').done(function(data) {
-    //   this.setState({data: data});
-    //   console.log(data.users);
-    // }.bind(this));
+
 
     // this.getData();
-    this.updateState();
+    // this.updateState();
 
     /// Run update state, passing in the setup
     // this.updateState(null, this.state.lat, this.state.lon);
@@ -200,10 +228,7 @@ var UsersMap = React.createClass({
 
 });
 
-/**
- * Slap it on the page
- */
 ReactDOM.render(
-  <App users={USERS} source={'https://engine.eatsleepride.com:8088/api/search/usersNearby?lat=43.648714&lng=-79.3924411&token=17a9b49cf1a6748e466c498dc077edc9'} />,
+  <App source={'https://engine.eatsleepride.com:8088/api/search/usersNearby?lat=43.648714&lng=-79.3924411&token=17a9b49cf1a6748e466c498dc077edc9'} />,
   document.getElementById('app')
 );
