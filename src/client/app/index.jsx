@@ -33,7 +33,7 @@ var App = React.createClass({
 
   getInitialState: function() {
     return {
-      data: null,
+      users: null,
       bounds: null,
       selectedUser: null
     }
@@ -44,10 +44,11 @@ var App = React.createClass({
     if (data != null) { 
       bounds = data.bounds;
     }
+
     $.get(this.props.source, function (result) {
       var users = result.users;
       this.setState({
-        data: users,
+        users: users,
         bounds: bounds
       });
     }.bind(this));
@@ -68,8 +69,8 @@ var App = React.createClass({
   render: function() {
     return (
       <div>
-        <UsersMap initialLat={config.initialLat} initialLng={config.initialLng} userNames={this.state.data} />
-        <List selectedUser={this.state.selectedUser} userNames={this.state.data} bounds={this.state.bounds} />
+        <UsersMap initialLat={config.initialLat} initialLng={config.initialLng} userNames={this.state.users} bounds={this.state.bounds}/>
+        <List selectedUser={this.state.selectedUser} userNames={this.state.users} bounds={this.state.bounds} />
       </div>
     );
   }
@@ -78,10 +79,9 @@ var App = React.createClass({
 
 var UsersMap = React.createClass({
 
-  getInitialState: function () {
-    return {
-      data: null
-    };
+  shouldComponentUpdate: function(nextProps, nextState) {
+    var boundsHaveChanged = nextProps.bounds != this.props.bounds;
+    return nextProps.bounds == null || boundsHaveChanged;
   },
 
   renderMarkers: function() {
@@ -133,11 +133,7 @@ var UsersMap = React.createClass({
     });
 
     // is there a way to do this in React?
-    map.addListener('center_changed', function() {
-      this.triggerMapChanged(map);
-    }.bind(this));
-
-    map.addListener('zoom_changed', function() {
+    map.addListener('bounds_changed', function() {
       this.triggerMapChanged(map);
     }.bind(this));
 
