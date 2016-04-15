@@ -6,8 +6,7 @@ var ListItem = React.createClass({
 
   getInitialState: function() {
     return {
-      // userLat: this.props.lat,
-      // userLng: this.props.lng
+      
     };
   },
 

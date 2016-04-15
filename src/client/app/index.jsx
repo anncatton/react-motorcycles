@@ -48,21 +48,6 @@ var App = React.createClass({
         <List userNames={this.state.data} />
       </div>
     );
-    // if (this.state.data) {
-    //   return (
-    //     <div>
-    //       <UsersMap initialLat={config.initialLat} initialLng={config.initialLng} userNames={this.state.data} />
-    //       <List userNames={this.state.data} />
-    //     </div>
-    //   )
-    // } else {
-    //   return (
-    //     <div>
-    //       <UsersMap initialLat={config.initialLat} initialLng={config.initialLng} />
-    //       <List />
-    //     </div>
-    //   )
-    // }
   }
 
 });
@@ -75,13 +60,7 @@ var UsersMap = React.createClass({
     };
   },
 
-  // updateState: function() {
-
   componentWillUpdate: function() {
-
-  // componentWillReceiveProps: function() {
-
-    // var latLng = new google.maps.LatLng(this.state.lat, this.state.lng);
 
   },
 
@@ -122,78 +101,11 @@ var UsersMap = React.createClass({
     this.renderMarkers();
   },
 
-  // updateState: function () {
-
-
-    /// Set a timeout before doing map stuff
-    // window.setTimeout( function() {
-      
-    //   /// Set the marker position
-    //   // marker.setMap(map);
-      
-    //   /// Pan map to that position
-    //   // map.panTo(latLng);
-    // }.bind(this), 300);
-  // },
-  /**
-   * Set map marker position and pan settings
-   */
-
-  // updateState: function() {
-  //   console.log('here');
-  //   updateMap();
-  // },
-    /**
-   * After initial render
-   */
   componentDidMount: function () {
 
-    /// Render a new map
     this.renderMap(config.initialLat, config.initialLng);
 
-    // this.serverRequest = $.get(this.props.source).done(function(result) {
-    //   var users = result.users;
-    //   // this.setState({data: result});
-    // }.bind(this));
-
-
-    // this.getData();
-    // this.updateState();
-
-    /// Run update state, passing in the setup
-    // this.updateState(null, this.state.lat, this.state.lon);
   },
-
-  // somewhere in this function is where the ajax needs to happen (getData, then update map)
-  // getData: function () {
-  //   this.serverRequest = $.get(this.props.source).done(function(result) {
-  //     var users = result.users;
-  //     this.setState({data: result});
-  //   }.bind(this));
-  // },
-    // Variable to return
-    // var data;
-    
-    // return data;
-    /**
-   * Update state
-   */
-  // updateState: function (locationName, lat, lon) {
-    
-  //   // Get data from the API, then set state with it
-    // this.getData(locationName, lat, lon)
-    //   .then(function(data) {
-    //     /// Update the state, pass updateMap as a callback
-    //     this.setState({
-    //       lat:      data.coord.lat,
-    //       lon:      data.coord.lon,
-    //       weather:  this.capitalizeFirstLetter( data.weather[0].description ),
-    //       location: data.name,
-    //       icon:     'http://openweathermap.org/img/w/' + data.weather[0].icon + '.png' /// Messy
-    //     }, this.updateMap ) /// Pass updateMap as a callback
-    //   }.bind(this));
-  //   // return null;
-  // },
 
   componentDidUpdate: function() {
     this.renderMarkers();
@@ -203,7 +115,7 @@ var UsersMap = React.createClass({
     var divStyle = {height: "100%", width: "70%"};
 
     return (
-      <div id="map" className="foo" style={divStyle}></div>        
+      <div id="map" style={divStyle}></div>        
     );
   }
 
