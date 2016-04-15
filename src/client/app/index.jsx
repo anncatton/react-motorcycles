@@ -110,7 +110,6 @@ var UsersMap = React.createClass({
       });
     }
 
-
     map.addListener('zoom_changed', function() {
       mapZoomLevel = map.getZoom();
     });
@@ -129,6 +128,11 @@ var UsersMap = React.createClass({
     // is there a way to do this in React?
 
     map.addListener('center_changed', function() {
+      $(document).trigger("map_changed", { bounds: map.getBounds() });
+    });
+
+    map.addListener('zoom_changed', function() {
+      console.log(map.getBounds());
       $(document).trigger("map_changed", { bounds: map.getBounds() });
     });
 
