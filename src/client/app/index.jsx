@@ -25,16 +25,17 @@ var config = {
   mapZoomLevel: 10
 }
 
-// var App = React.createClass({
+var App = React.createClass({
 
-//  render: function() {
-//    return(
-//      <div>
-//        <UsersMap />
-//        <List />
-//    );
-//  }
-// });
+ render: function() {
+   return(
+    <div>
+       <UsersMap initialLat={config.initialLat} initialLng={config.initialLng} users={this.props.users} />
+       <List userNames={this.props.users} />
+    </div>
+   );
+ }
+});
 
 var UsersMap = React.createClass({
  
@@ -141,6 +142,7 @@ var UsersMap = React.createClass({
     /// Render a new map
     console.log('mounting');
     this.renderMap(config.initialLat, config.initialLng);
+
     // this.serverRequest = $.get(this.props.source).done(function(result) {
     //   var users = result.users;
     //   // this.setState({data: result});
@@ -192,10 +194,7 @@ var UsersMap = React.createClass({
     var divStyle = {height: "100%", width: "70%"};
 
     return (
-      <div>
-          <div id="map" style={divStyle}></div>
-          <List userNames={this.props.users} />        
-      </div>
+      <div id="map" style={divStyle}></div>        
     );
   }
 
@@ -205,6 +204,6 @@ var UsersMap = React.createClass({
  * Slap it on the page
  */
 ReactDOM.render(
-  <UsersMap initialLat={config.initialLat} initialLng={config.initialLng} users={USERS} source={'https://engine.eatsleepride.com:8088/api/search/usersNearby?lat=43.648714&lng=-79.3924411&token=17a9b49cf1a6748e466c498dc077edc9'} />,
+  <App users={USERS} source={'https://engine.eatsleepride.com:8088/api/search/usersNearby?lat=43.648714&lng=-79.3924411&token=17a9b49cf1a6748e466c498dc077edc9'} />,
   document.getElementById('app')
 );
