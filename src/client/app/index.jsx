@@ -2,13 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import List from './list.jsx';
 
-/// So secure
-var key = "AIzaSyC_9SnjEtTWdvu1bcIkE7GTMt1ZGGfOMJs";
-
 var map;
 var mapZoomLevel;
 var mapMarkers = [];
-var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
 
 var config = {
   initialLat: 43.75,
@@ -46,10 +42,9 @@ var App = React.createClass({
   updateData: function(e, data) {
     var bounds;
     if (data != null) { 
-      console.log(data.bounds);
       bounds = data.bounds;
     }
-    this.serverRequest = $.get(this.props.source, function (result) {
+    $.get(this.props.source, function (result) {
       var users = result.users;
       this.setState({
         data: users,
@@ -61,15 +56,13 @@ var App = React.createClass({
   componentDidMount: function() {
 
     $(document).on("map_changed", debounce(this.updateData, 250));
+
+    // want to do this on create as well
     this.updateData();
+
     $(document).on("user_selected", function(e, data) {
-      console.log()
       this.setState({selectedUser: data.selected});
     }.bind(this));
-  },
-
-  componentWillUnmount: function() {
-    this.serverRequest.abort();
   },
 
   render: function() {
@@ -89,10 +82,6 @@ var UsersMap = React.createClass({
     return {
       data: null
     };
-  },
-
-  componentWillUpdate: function() {
-
   },
 
   renderMarkers: function() {
@@ -147,7 +136,6 @@ var UsersMap = React.createClass({
     });
 
     map.addListener('zoom_changed', function() {
-      console.log(map.getBounds());
       $(document).trigger("map_changed", { bounds: map.getBounds() });
     });
 
@@ -155,9 +143,7 @@ var UsersMap = React.createClass({
   },
 
   componentDidMount: function () {
-
     this.renderMap(config.initialLat, config.initialLng);
-
   },
 
   componentDidUpdate: function() {

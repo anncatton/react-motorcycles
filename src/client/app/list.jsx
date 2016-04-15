@@ -9,10 +9,6 @@ var List = React.createClass({
     return {data: null}
   },
 
-  componentDidMount: function() {
-    
-  },
-
   render: function() {
     var rows = [];
     if(this.props.userNames != null) {
