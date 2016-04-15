@@ -92,6 +92,9 @@ var UsersMap = React.createClass({
 
   renderMarkers: function() {
     var lastUser = null;
+    mapMarkers.forEach(function(marker) {
+      marker.setMap(null);
+    });
 
     if (this.props.userNames != null) {
       this.props.userNames.forEach(function(user) {
@@ -101,8 +104,8 @@ var UsersMap = React.createClass({
             map: map,
             draggable: false
           });
-          // marker.setMap(map);
-          mapMarkers 
+          marker.setMap(map);
+          mapMarkers.push(marker); 
         }
       });
     }
