@@ -18,10 +18,14 @@ var List = React.createClass({
     if(this.props.userNames != null) {
       var lastUser = null;
       var id = 1;
-      this.props.userNames.forEach(function(userName) {
-        if (userName.name !== lastUser) {
-          rows.push(<ListItem key={id} name={userName.name} lat={userName.lat} lng={userName.lng} />);
-          id += 1
+      var bounds = this.props.bounds;
+      this.props.userNames.forEach(function(user) {
+        if (user.name !== lastUser) {
+          var userLatLng = new google.maps.LatLng({lat: user.lat, lng: user.lng});
+          if (bounds == null || bounds.contains(userLatLng)){
+            rows.push(<ListItem key={id} name={user.name} lat={user.lat} lng={user.lng} />);
+            id += 1
+          }
         }
       });
     }

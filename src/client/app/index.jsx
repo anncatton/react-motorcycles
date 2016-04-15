@@ -4,17 +4,11 @@ import List from './list.jsx';
 
 /// So secure
 var key = "AIzaSyC_9SnjEtTWdvu1bcIkE7GTMt1ZGGfOMJs";
-var USERS = [
-  {name: 'Hugo', lat: 43.45, lng: -80.99},
-  {name: 'Johnny', lat: 44.01, lng: -79.22},
-  {name: 'Tammy', lat: 44.90, lng: -78.56},
-  {name: 'Sally', lat: 43.06, lng: -79.03},
-  {name: 'Chocolate Thunder', lat: 44.20, lng: -79.86},
-  {name: 'Handsome', lat: 43.10, lng: -79.65}
-];
+
 /// Google Map Vars
 var map;
 var mapZoomLevel;
+var mapMarkers = [];
 /// Config for the app setup
 var config = {
   initialLat: 43.75,
@@ -22,19 +16,50 @@ var config = {
   mapZoomLevel: 10
 }
 
+// from https://davidwalsh.name/javascript-debounce-function
+function debounce(func, wait, immediate) {
+  var timeout;
+  return function() {
+    var context = this, args = arguments;
+    var later = function() {
+      timeout = null;
+      if (!immediate) func.apply(context, args);
+    };
+    var callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    if (callNow) func.apply(context, args);
+  };
+};
+
 var App = React.createClass({
 
   getInitialState: function() {
-    return {data: null}
+    return {
+      data: null,
+      bounds: null
+    }
   },
-  
-  componentDidMount: function() {
+
+  updateData: function(e, data) {
+    var bounds;
+    if (data != null) { 
+      console.log(data.bounds);
+      bounds = data.bounds;
+    }
     this.serverRequest = $.get(this.props.source, function (result) {
       var users = result.users;
       this.setState({
-        data: users
+        data: users,
+        bounds: bounds
       });
     }.bind(this));
+  },
+  
+  componentDidMount: function() {
+
+    $(document).on("map_changed", debounce(this.updateData, 250));
+    this.updateData();
   },
 
   componentWillUnmount: function() {
@@ -45,7 +70,7 @@ var App = React.createClass({
     return (
       <div>
         <UsersMap initialLat={config.initialLat} initialLng={config.initialLng} userNames={this.state.data} />
-        <List userNames={this.state.data} />
+        <List userNames={this.state.data} bounds={this.state.bounds} />
       </div>
     );
   }
@@ -68,7 +93,6 @@ var UsersMap = React.createClass({
   renderMarkers: function() {
     var lastUser = null;
 
-
     if (this.props.userNames != null) {
       this.props.userNames.forEach(function(user) {
         if (user.name !== lastUser) {
@@ -77,7 +101,8 @@ var UsersMap = React.createClass({
             map: map,
             draggable: false
           });
-          marker.setMap(map);
+          // marker.setMap(map);
+          mapMarkers 
         }
       });
     }
@@ -89,7 +114,7 @@ var UsersMap = React.createClass({
   },
 
   renderMap: function(lat, lng) {
-    
+
     /// Create a new map
     map = new google.maps.Map(document.getElementById('map'), {
       zoom: config.mapZoomLevel,
@@ -97,7 +122,13 @@ var UsersMap = React.createClass({
       zoomControl: true,
       center: new google.maps.LatLng(lat, lng)
     });
-  
+
+    // is there a way to do this in React?
+
+    map.addListener('center_changed', function() {
+      $(document).trigger("map_changed", { bounds: map.getBounds() });
+    });
+
     this.renderMarkers();
   },
 
