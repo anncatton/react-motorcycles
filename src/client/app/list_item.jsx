@@ -6,7 +6,7 @@ var ListItem = React.createClass({
 
   getInitialState: function() {
     return {
-      
+
     };
   },
 
@@ -21,7 +21,7 @@ var ListItem = React.createClass({
 
   render: function() {
     return (
-      <li>{this.props.name}, {this.props.lat}, {this.props.lng}</li>
+      <li className={this.props.className}>{this.props.name}, {this.props.lat}, {this.props.lng}</li>
     );
   }
 

@@ -23,11 +23,16 @@ var List = React.createClass({
         if (user.name !== lastUser) {
           var userLatLng = new google.maps.LatLng({lat: user.lat, lng: user.lng});
           if (bounds == null || bounds.contains(userLatLng)){
-            rows.push(<ListItem key={id} name={user.name} lat={user.lat} lng={user.lng} />);
+            if (this.props.selectedUser && this.props.selectedUser.id == user.id) {
+              var className = "selected";
+            } else {
+              var className = ""
+            }
+            rows.push(<ListItem className={className} key={id} name={user.name} lat={user.lat} lng={user.lng} />);
             id += 1
           }
         }
-      });
+      }.bind(this));
     }
     return (
       <ul>
