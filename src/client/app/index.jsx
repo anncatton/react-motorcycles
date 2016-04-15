@@ -36,6 +36,7 @@ var App = React.createClass({
       data: null,
       bounds: null,
       selectedUser: null
+      // geolocation: this.getCurrentLocation()
     }
   },
 
@@ -160,7 +161,11 @@ var UsersMap = React.createClass({
 
 });
 
-ReactDOM.render(
-  <App source={'https://engine.eatsleepride.com:8088/api/search/usersNearby?lat=43.648714&lng=-79.3924411&token=17a9b49cf1a6748e466c498dc077edc9'} />,
-  document.getElementById('app')
-);
+navigator.geolocation.getCurrentPosition(function(result) {
+  var coordinates = result.coords;
+  var url = 'https://engine.eatsleepride.com:8088/api/search/usersNearby?lat=' + coordinates.latitude + '&lng=' + coordinates.longitude + '&token=17a9b49cf1a6748e466c498dc077edc9';
+  ReactDOM.render(
+    <App source={url} />,
+    document.getElementById('app')
+  );
+});
