@@ -69,8 +69,8 @@ var App = React.createClass({
   render: function() {
     return (
       <div>
-        <UsersMap initialLat={config.initialLat} initialLng={config.initialLng} userNames={this.state.users} bounds={this.state.bounds}/>
-        <List selectedUser={this.state.selectedUser} userNames={this.state.users} bounds={this.state.bounds} />
+        <UsersMap initialLat={config.initialLat} initialLng={config.initialLng} users={this.state.users} bounds={this.state.bounds}/>
+        <List selectedUser={this.state.selectedUser} users={this.state.users} bounds={this.state.bounds} />
       </div>
     );
   }
@@ -90,8 +90,8 @@ var UsersMap = React.createClass({
       marker.setMap(null);
     });
 
-    if (this.props.userNames != null) {
-      this.props.userNames.forEach(function(user) {
+    if (this.props.users != null) {
+      this.props.users.forEach(function(user) {
         var userImage = {
           url: user.avatar,
           scaledSize: new google.maps.Size(20, 32),

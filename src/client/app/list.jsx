@@ -5,17 +5,13 @@ import ListItem from './list_item.jsx';
 
 var List = React.createClass({
 
-  getInitialState: function() {
-    return {data: null}
-  },
-
   render: function() {
     var rows = [];
-    if(this.props.userNames != null) {
+    if(this.props.users != null) {
       var lastUser = null;
       var id = 1;
       var bounds = this.props.bounds;
-      this.props.userNames.forEach(function(user) {
+      this.props.users.forEach(function(user) {
         if (user.name !== lastUser) {
           var userLatLng = new google.maps.LatLng({lat: user.lat, lng: user.lng});
           if (bounds == null || bounds.contains(userLatLng)){
