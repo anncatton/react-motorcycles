@@ -8,6 +8,7 @@ var key = "AIzaSyC_9SnjEtTWdvu1bcIkE7GTMt1ZGGfOMJs";
 var map;
 var mapZoomLevel;
 var mapMarkers = [];
+var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
 
 var config = {
   initialLat: 43.75,
@@ -103,11 +104,19 @@ var UsersMap = React.createClass({
     if (this.props.userNames != null) {
       this.props.userNames.forEach(function(user) {
         if (user.name !== lastUser) {
+          var userImage = {
+            url: user.avatar,
+            scaledSize: new google.maps.Size(20, 32),
+            origin: new google.maps.Point(0, 0)
+          };
+
           var marker = new google.maps.Marker({
             position: {lat: user.lat, lng: user.lng},
             map: map,
-            draggable: false
+            draggable: false,
+            icon: userImage
           });
+
           marker.setMap(map);
           mapMarkers.push(marker); 
 
