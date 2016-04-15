@@ -80,32 +80,14 @@ var UsersMap = React.createClass({
   componentWillUpdate: function() {
 
   // componentWillReceiveProps: function() {
-    var mapMarkers = []
-    var lastUser = null;
-    var id = 1;
 
     // var latLng = new google.maps.LatLng(this.state.lat, this.state.lng);
 
-    // this.props.userNames.forEach(function(user) {
-    //   if (user.name !== lastUser) {
-    //     var marker = new google.maps.Marker({
-    //       position: {lat: user.lat, lng: user.lng},
-    //       map: map,
-    //       draggable: false
-    //     });
-    //     marker.setMap(map);
-    //   }
-    // });
   },
     /**
    * Render the map on the page
    */
   renderMap: function(lat, lng) {
-
-    /**
-     * Map coordinates and pin coordinates are added in updateMap(),
-     * which is run by updateStateWithData()
-     */
     
     /// Create a new map
     map = new google.maps.Map(document.getElementById('map'), {
@@ -115,6 +97,22 @@ var UsersMap = React.createClass({
       center: new google.maps.LatLng(lat, lng)
     });
   
+    // var mapMarkers = []
+    // var lastUser = null;
+    // var id = 1;
+
+    // if (this.props.userNames != null) {
+    //   this.props.userNames.forEach(function(user) {
+    //     if (user.name !== lastUser) {
+    //       var marker = new google.maps.Marker({
+    //         position: {lat: user.lat, lng: user.lng},
+    //         map: map,
+    //         draggable: false
+    //       });
+    //       marker.setMap(map);
+    //     }
+    //   });
+    // }
     /// Create a new marker
     
     /// Set the initial pin drop animation
