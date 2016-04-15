@@ -36,7 +36,6 @@ var App = React.createClass({
       data: null,
       bounds: null,
       selectedUser: null
-      // geolocation: this.getCurrentLocation()
     }
   },
 
@@ -86,40 +85,42 @@ var UsersMap = React.createClass({
   },
 
   renderMarkers: function() {
-    var lastUser = null;
+
     mapMarkers.forEach(function(marker) {
       marker.setMap(null);
     });
 
     if (this.props.userNames != null) {
       this.props.userNames.forEach(function(user) {
-        if (user.name !== lastUser) {
-          var userImage = {
-            url: user.avatar,
-            scaledSize: new google.maps.Size(20, 32),
-            origin: new google.maps.Point(0, 0)
-          };
+        var userImage = {
+          url: user.avatar,
+          scaledSize: new google.maps.Size(20, 32),
+          origin: new google.maps.Point(0, 0)
+        };
 
-          var marker = new google.maps.Marker({
-            position: {lat: user.lat, lng: user.lng},
-            map: map,
-            draggable: false,
-            icon: userImage
-          });
+        var marker = new google.maps.Marker({
+          position: {lat: user.lat, lng: user.lng},
+          map: map,
+          draggable: false,
+          icon: userImage
+        });
 
-          marker.setMap(map);
-          mapMarkers.push(marker); 
+        marker.setMap(map);
+        mapMarkers.push(marker); 
 
-          marker.addListener('click', function() {
-            $(document).trigger('user_selected', { selected: user });
-          });
-        }
+        marker.addListener('click', function() {
+          $(document).trigger('user_selected', { selected: user });
+        });
       });
     }
 
     map.addListener('zoom_changed', function() {
       mapZoomLevel = map.getZoom();
     });
+  },
+
+  triggerMapChanged: function(map) {
+    $(document).trigger("map_changed", { bounds: map.getBounds() });
   },
 
   renderMap: function(lat, lng) {
@@ -133,14 +134,13 @@ var UsersMap = React.createClass({
 
     // is there a way to do this in React?
     map.addListener('center_changed', function() {
-      $(document).trigger("map_changed", { bounds: map.getBounds() });
-    });
+      this.triggerMapChanged(map);
+    }.bind(this));
 
     map.addListener('zoom_changed', function() {
-      $(document).trigger("map_changed", { bounds: map.getBounds() });
-    });
+      this.triggerMapChanged(map);
+    }.bind(this));
 
-    this.renderMarkers();
   },
 
   componentDidMount: function () {
