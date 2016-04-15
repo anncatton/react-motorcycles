@@ -28,7 +28,15 @@ var List = React.createClass({
             } else {
               var className = ""
             }
-            rows.push(<ListItem className={className} key={id} name={user.name} lat={user.lat} lng={user.lng} />);
+            rows.push(<ListItem 
+              className={className} 
+              key={id} 
+              name={user.name} 
+              lat={user.lat} 
+              lng={user.lng} 
+              avatar={user.avatar}
+              lastSeen={user.lastSeen}
+              distanceSI={user.distanceSI} />);
             id += 1
           }
         }

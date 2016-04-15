@@ -5,11 +5,10 @@ import List from './list.jsx';
 /// So secure
 var key = "AIzaSyC_9SnjEtTWdvu1bcIkE7GTMt1ZGGfOMJs";
 
-/// Google Map Vars
 var map;
 var mapZoomLevel;
 var mapMarkers = [];
-/// Config for the app setup
+
 var config = {
   initialLat: 43.75,
   initialLng: -79.38,
@@ -95,7 +94,6 @@ var UsersMap = React.createClass({
 
   },
 
-
   renderMarkers: function() {
     var lastUser = null;
     mapMarkers.forEach(function(marker) {
@@ -127,7 +125,6 @@ var UsersMap = React.createClass({
 
   renderMap: function(lat, lng) {
 
-    /// Create a new map
     map = new google.maps.Map(document.getElementById('map'), {
       zoom: config.mapZoomLevel,
       disableDefaultUI: true,
@@ -136,7 +133,6 @@ var UsersMap = React.createClass({
     });
 
     // is there a way to do this in React?
-
     map.addListener('center_changed', function() {
       $(document).trigger("map_changed", { bounds: map.getBounds() });
     });
