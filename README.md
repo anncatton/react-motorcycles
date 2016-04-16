@@ -18,4 +18,4 @@ as well as running the server.rb file:
 
 $ ruby server.rb
 
-Should be running on (http://localhost:3000) in the browser
+Should be running on [http://localhost:3000](http://localhost:3000) in the browser
