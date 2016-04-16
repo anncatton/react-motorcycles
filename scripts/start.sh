@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 set -ex
-http-server -p $PORT ./src/public/
+http-server -p $PORT ./src/
