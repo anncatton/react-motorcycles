@@ -7,8 +7,8 @@ var listItemStyle = {
   position: 'relative',
   height: '6rem',
   borderBottom: '2px solid lightgray',
-  padding: '0.2rem',
-  marginRight: '-3%'
+  padding: '0.2rem'
+  // marginRight: '-3%'
 };
 
 var selectedListItemStyle = {
@@ -16,8 +16,8 @@ var selectedListItemStyle = {
   position: 'relative',
   height: '6rem',
   borderBottom: '2px solid lightgray',
-  padding: '0.2rem',
-  marginRight: '-3%'
+  padding: '0.2rem'
+  // marginRight: '-3%'
 };
 
 var imageStyle = {

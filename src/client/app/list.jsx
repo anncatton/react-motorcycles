@@ -13,7 +13,7 @@ var listStyle = {
   right: '0px',
   bottom: '0px',
   overflow: 'scroll',
-  paddingRight: '2.5%',
+  paddingRight: '1.4%',
   fontFamily: 'Helvetica',
   marginTop: '4rem',
 };
