@@ -76,7 +76,6 @@ var App = React.createClass({
   },
 
   componentDidMount: function() {
-    // want to do this on create as well
     this.reloadUsers();
   },
 
