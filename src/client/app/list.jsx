@@ -1,6 +1,7 @@
 'use strict'
 
 import React from 'react';
+
 import ListItem from './list_item.jsx';
 
 // component styles
@@ -19,7 +20,7 @@ var listStyle = {
 };
 
 var List = React.createClass({
-
+ 
   render: function() {
 
     var rows = [];

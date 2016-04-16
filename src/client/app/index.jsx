@@ -77,7 +77,7 @@ var App = React.createClass({
       });
     }.bind(this));
   },
-  
+
   componentDidMount: function() {
 
     $(document).on("map_changed", debounce(this.updateData, 250));
@@ -87,7 +87,12 @@ var App = React.createClass({
 
     $(document).on("user_selected", function(e, data) {
       this.setState({selectedUser: data.selected});
+      $('ul').animate({
+        scrollTop: $("li.selected")[0].offsetTop
+      }, "fast");
     }.bind(this));
+
+
   },
 
   render: function() {
@@ -181,10 +186,6 @@ var UsersMap = React.createClass({
   },
 
   render: function() {
-    // var divStyle = {
-    //   height: "100%",
-    //   width: "70%"
-    // };
 
     return (
       <div style={mapStyle} id="map"></div>        
