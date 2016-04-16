@@ -184,7 +184,7 @@ console.log(process.env);
 
 navigator.geolocation.getCurrentPosition(function(result) {
   var coordinates = result.coords;
-  var url = 'https://engine.eatsleepride.com:8088/api/search/usersNearby?lat=' + coordinates.latitude + '&lng=' + coordinates.longitude + '&token=' + ESR_TOKEN;
+  var url = 'https://engine.eatsleepride.com:8088/api/search/usersNearby?lat=' + coordinates.latitude + '&lng=' + coordinates.longitude + '&token=17a9b49cf1a6748e466c498dc077edc9';
   ReactDOM.render(
     <App style={appStyle} source={url} />,
     document.getElementById('app')
