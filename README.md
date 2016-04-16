@@ -4,7 +4,7 @@ After cloning, inside the directory run:
 
 $ npm install
 
-This will create the package.json file for all the dependencies.
+This will install all the dependencies locally.
 
 Then in src/client/app/index.jsx, make sure to add your own EatSleepRide token on line 7:
 
@@ -18,4 +18,4 @@ as well as running the server.rb file:
 
 $ ruby server.rb
 
-Should be running on localhost:3000 in the browser
+Should be running on http://localhost:3000 in the browser
