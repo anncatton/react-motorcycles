@@ -7,9 +7,6 @@ import NavBar from './nav_bar.jsx';
 var map;
 var mapZoomLevel;
 var mapMarkers = [];
-var infoWindow = new google.maps.InfoWindow({
-  content: ''
-});
 
 var config = {
   initialLat: 43.75,
@@ -63,43 +60,43 @@ var App = React.createClass({
     }
   },
 
-  updateData: function(e, data) {
-    var bounds;
-    if (data != null) { 
-      bounds = data.bounds;
-    }
-
+  reloadUsers: function() {
     $.get(this.props.source, function (result) {
-      var users = result.users;
       this.setState({
-        users: users,
-        bounds: bounds
+        users: result.users,
       });
     }.bind(this));
   },
 
+  onBoundsChanged: function(newBounds) {
+    this.setState({bounds: newBounds});
+    debounce(this.reloadUsers, 250);
+  },
+
   componentDidMount: function() {
-
-    $(document).on("map_changed", debounce(this.updateData, 250));
-
     // want to do this on create as well
-    this.updateData();
+    this.reloadUsers();
+  },
 
-    $(document).on("user_selected", function(e, data) {
-      this.setState({selectedUser: data.selected});
-      $('ul').animate({
-        scrollTop: $("li.selected")[0].offsetTop
-      }, "fast");
-    }.bind(this));
-
-
+  onUserSelected: function(user) {
+    this.setState({selectedUser: user});
+    $('ul').animate({
+      scrollTop: $("li.selected")[0].offsetTop
+    }, "fast");
   },
 
   render: function() {
     return (
       <div style={appStyle}>
         <NavBar />
-        <UsersMap initialLat={config.initialLat} initialLng={config.initialLng} users={this.state.users} bounds={this.state.bounds}/>
+        <UsersMap 
+          initialLat={config.initialLat} 
+          initialLng={config.initialLng} 
+          users={this.state.users} 
+          bounds={this.state.bounds} 
+          onUserSelected={this.onUserSelected}
+          onBoundsChanged={this.onBoundsChanged}
+          />
         <List selectedUser={this.state.selectedUser} users={this.state.users} bounds={this.state.bounds} />
       </div>
     );
@@ -111,7 +108,7 @@ var UsersMap = React.createClass({
 
   shouldComponentUpdate: function(nextProps, nextState) {
     var boundsHaveChanged = nextProps.bounds != this.props.bounds;
-    return nextProps.bounds == null || boundsHaveChanged;
+    return this.props.users == null || nextProps.bounds == null || boundsHaveChanged;
   },
 
   renderMarkers: function() {
@@ -140,25 +137,15 @@ var UsersMap = React.createClass({
         mapMarkers.push(marker); 
 
         marker.addListener('click', function() {
-          $(document).trigger('user_selected', { selected: user });
-        });
-
-        // marker.addListener('click', function() {
-        //   infoWindow.close();
-        //   infoWindow.setContent(user.name);
-        //   infoWindow.open(map, marker);
-        // });
+          this.props.onUserSelected(user);
+        }.bind(this));
     
-      });
+      }.bind(this));
     }
 
     map.addListener('zoom_changed', function() {
       mapZoomLevel = map.getZoom();
     });
-  },
-
-  triggerMapChanged: function(map) {
-    $(document).trigger("map_changed", { bounds: map.getBounds() });
   },
 
   renderMap: function(lat, lng) {
@@ -170,9 +157,8 @@ var UsersMap = React.createClass({
       center: new google.maps.LatLng(lat, lng)
     });
 
-    // is there a way to do this in React?
     map.addListener('bounds_changed', function() {
-      this.triggerMapChanged(map);
+      this.props.onBoundsChanged(map.getBounds());
     }.bind(this));
 
   },
@@ -186,7 +172,6 @@ var UsersMap = React.createClass({
   },
 
   render: function() {
-
     return (
       <div style={mapStyle} id="map"></div>        
     );

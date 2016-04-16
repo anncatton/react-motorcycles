@@ -2,6 +2,7 @@
 
 import React from 'react';
 
+// component styles
 var navStyle = {
   height: '3.5rem',
   width: '100%',
@@ -21,6 +22,7 @@ var navTextStyle = {
   marginLeft: '10%',
   paddingTop: '0.3rem'
 }
+
 var NavBar = React.createClass({
   
   render: function() {

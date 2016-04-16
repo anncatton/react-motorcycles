@@ -24,6 +24,7 @@ var List = React.createClass({
   render: function() {
 
     var rows = [];
+    
     if(this.props.users != null) {
       var lastUser = null;
       var id = 1;
