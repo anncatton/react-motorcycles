@@ -4,8 +4,8 @@ import ReactDOM from 'react-dom';
 import List from './list.jsx';
 import NavBar from './nav_bar.jsx';
 
-// var ESR_TOKEN = 'YOUR ESR TOKEN';
-var ESR_TOKEN = '17a9b49cf1a6748e466c498dc077edc9';
+var ESR_TOKEN = 'YOUR ESR TOKEN';
+
 var map;
 var mapZoomLevel;
 var mapMarkers = [];
