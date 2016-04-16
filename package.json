@@ -19,5 +19,7 @@
     "react-responsive": "^1.1.2",
     "react-time-ago": "^0.1.3",
     "webpack": "^1.12.15"
-  }
+  },
+  "dist": "webpack -p",
+  "postinstall": "npm run dist"
 }
