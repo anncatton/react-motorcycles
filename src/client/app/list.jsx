@@ -3,9 +3,25 @@
 import React from 'react';
 import ListItem from './list_item.jsx';
 
+// component styles
+var listStyle = {
+  width: '25%',
+  listStyleType: 'none',
+  position: 'fixed !important',
+  position: 'absolute',
+  top: '0px',
+  right: '0px',
+  bottom: '0px',
+  overflow: 'scroll',
+  paddingRight: '2.5%',
+  fontFamily: 'Helvetica',
+  marginTop: '4rem',
+};
+
 var List = React.createClass({
 
   render: function() {
+
     var rows = [];
     if(this.props.users != null) {
       var lastUser = null;
@@ -35,7 +51,7 @@ var List = React.createClass({
       }.bind(this));
     }
     return (
-      <ul>
+      <ul style={listStyle}>
         {rows}
       </ul>
     );

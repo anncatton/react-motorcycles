@@ -1,17 +1,40 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import List from './list.jsx';
+import NavBar from './nav_bar.jsx';
 
 var map;
 var mapZoomLevel;
 var mapMarkers = [];
+var infoWindow = new google.maps.InfoWindow({
+  content: ''
+});
 
 var config = {
   initialLat: 43.75,
   initialLng: -79.38,
   mapZoomLevel: 10
-}
+};
+
+// className selectors
 var selectedUser = null;
+
+// component styles
+var appStyle = {
+  height: '100%',
+  width: '100%'
+};
+
+var mapStyle = {
+  width: '70%',
+  height: '85%',
+  position: 'fixed !important',
+  top: '4.3rem',
+  left: '1%',
+  marginRight: '1%',
+  marginBottom: '2rem'
+};
 
 // from https://davidwalsh.name/javascript-debounce-function
 function debounce(func, wait, immediate) {
@@ -29,6 +52,7 @@ function debounce(func, wait, immediate) {
   };
 };
 
+// root component
 var App = React.createClass({
 
   getInitialState: function() {
@@ -68,7 +92,8 @@ var App = React.createClass({
 
   render: function() {
     return (
-      <div>
+      <div style={appStyle}>
+        <NavBar />
         <UsersMap initialLat={config.initialLat} initialLng={config.initialLng} users={this.state.users} bounds={this.state.bounds}/>
         <List selectedUser={this.state.selectedUser} users={this.state.users} bounds={this.state.bounds} />
       </div>
@@ -111,6 +136,13 @@ var UsersMap = React.createClass({
         marker.addListener('click', function() {
           $(document).trigger('user_selected', { selected: user });
         });
+
+        // marker.addListener('click', function() {
+        //   infoWindow.close();
+        //   infoWindow.setContent(user.name);
+        //   infoWindow.open(map, marker);
+        // });
+    
       });
     }
 
@@ -148,10 +180,13 @@ var UsersMap = React.createClass({
   },
 
   render: function() {
-    var divStyle = {height: "100%", width: "70%"};
+    // var divStyle = {
+    //   height: "100%",
+    //   width: "70%"
+    // };
 
     return (
-      <div id="map" style={divStyle}></div>        
+      <div style={mapStyle} id="map"></div>        
     );
   }
 
@@ -161,7 +196,7 @@ navigator.geolocation.getCurrentPosition(function(result) {
   var coordinates = result.coords;
   var url = 'https://engine.eatsleepride.com:8088/api/search/usersNearby?lat=' + coordinates.latitude + '&lng=' + coordinates.longitude + '&token=17a9b49cf1a6748e466c498dc077edc9';
   ReactDOM.render(
-    <App source={url} />,
+    <App style={appStyle} source={url} />,
     document.getElementById('app')
   );
 });
