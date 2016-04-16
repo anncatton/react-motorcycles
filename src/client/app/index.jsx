@@ -117,11 +117,12 @@ var UsersMap = React.createClass({
 
     if (this.props.users != null) {
       this.props.users.forEach(function(user) {
-        var userImage = {
+
+        var userImage = new google.maps.Circle({
           url: user.avatar,
-          scaledSize: new google.maps.Size(20, 32),
-          origin: new google.maps.Point(0, 0)
-        };
+          scaledSize: new google.maps.Size(30, 30),
+          origin: new google.maps.Point(0, 0) 
+        });
 
         var marker = new google.maps.Marker({
           position: {lat: user.lat, lng: user.lng},

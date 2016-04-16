@@ -7,16 +7,17 @@ var listItemStyle = {
   position: 'relative',
   height: '6rem',
   borderBottom: '2px solid lightgray',
-  padding: '0.2rem'
+  padding: '0.2rem',
+  marginRight: '-3%'
 };
 
 var selectedListItemStyle = {
-  backgroundColor: '#E2F7FA',
-  color: '#2196F3',
+  backgroundColor: '#E8F3DB',
   position: 'relative',
   height: '6rem',
   borderBottom: '2px solid lightgray',
-  padding: '0.2rem'
+  padding: '0.2rem',
+  marginRight: '-3%'
 };
 
 var imageStyle = {
